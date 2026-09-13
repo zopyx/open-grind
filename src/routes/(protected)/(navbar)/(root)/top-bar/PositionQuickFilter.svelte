@@ -5,7 +5,7 @@
 	import FilterDrawer from "$lib/components/filters/FilterDrawer.svelte";
 	import PositionFilterToggle from "$lib/components/filters/position/PositionFilterToggle.svelte";
 	import { gridState } from "$lib/grid/grid-state.svelte";
-	import { defaultFilters } from "$lib/model/browse/grid/filters";
+	import { defaultFilterPreset } from "$lib/model/browse/grid/presets";
 	import type { filterPositionSchema } from "$lib/model/browse/grid/filters";
 
 	let { open = $bindable() }: { open: boolean } = $props();
@@ -26,7 +26,7 @@
 	title="Positions"
 	switchLabel="Filter by position"
 	onreset={() => {
-		value = defaultFilters.positions;
+		value = defaultFilterPreset.filters.positions;
 	}}
 	onapply={() =>
 		gridState.filters.set({ positionEnabled: enabled, positions: value })}

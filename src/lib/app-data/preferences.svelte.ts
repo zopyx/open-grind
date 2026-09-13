@@ -5,6 +5,7 @@ import z from "zod";
 import { backdropBlurCalibrationSchema } from "$lib/blur/calibration/decide";
 import { backdropBlurQualitySchema } from "$lib/blur/quality";
 import { gridSearchFiltersSchema } from "$lib/model/browse/grid/filters";
+import { filterPresetSchema } from "$lib/model/browse/grid/presets";
 import { geohashSchema } from "$lib/model/geohash";
 import { unitSystemSchema } from "$lib/util/units";
 import {
@@ -24,6 +25,7 @@ const preferencesSchema = z.object({
 		.nullable()
 		.default(null)
 		.catch(null),
+	filterPresets: z.array(filterPresetSchema).default([]),
 	geohash: geohashSchema.nullable().default(null),
 	hapticFeedback: z.boolean().default(true),
 	onboardingComplete: z.boolean().default(false),
@@ -138,6 +140,7 @@ async function resetToDefaults(): Promise<void> {
 	window.location.reload();
 }
 
+// Filter presets are per-device templates, so they survive a sign-out.
 const accountPreferenceKeys = [
 	"autoUpdateLocation",
 	"geohash",

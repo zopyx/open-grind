@@ -12,6 +12,7 @@ import {
 import { autoLocation } from "$lib/location/auto-location";
 import { reconciler } from "$lib/util/reconcile";
 import type { cascadeV4QuerySchema } from "$lib/model/browse/grid/cascade/query/v4";
+import { FilterPresetsState } from "./filter-presets-state.svelte";
 import {
 	getCachedProfile,
 	getGrid,
@@ -25,6 +26,7 @@ import { GridSearchFiltersState } from "./grid-search-filters-state.svelte";
 
 class GridState {
 	filters = new GridSearchFiltersState({ onQueryChange: () => this.retry() });
+	filterPresets = new FilterPresetsState();
 	items: GridProfile[] = $state.raw([]);
 	nextPage: number | null = $state(0);
 	loadingMore = $state(false);

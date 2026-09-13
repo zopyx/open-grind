@@ -29,7 +29,12 @@ vi.stubGlobal(
 );
 
 import { gridState } from "$lib/grid/grid-state.svelte";
+import { ageRangeLabel } from "$lib/model/browse/grid/filters";
+import { defaultFilterPreset } from "$lib/model/browse/grid/presets";
 import AgeQuickFilter from "./AgeQuickFilter.svelte";
+
+// The drawer opens on the app's default filters, not on an empty age range.
+const defaultAgeLabel = ageRangeLabel(defaultFilterPreset.filters.age);
 
 describe("AgeQuickFilter", () => {
 	it("keeps an in-progress edit when the stored filters change underneath", async () => {
@@ -37,12 +42,12 @@ describe("AgeQuickFilter", () => {
 		render(AgeQuickFilter, { props: { open: true } });
 		flushSync();
 
-		expect(document.body.textContent).toContain("18 years & over");
+		expect(document.body.textContent).toContain(defaultAgeLabel);
 
 		gridState.filters.set({ age: [30, 40] });
 		flushSync();
 
-		expect(document.body.textContent).toContain("18 years & over");
+		expect(document.body.textContent).toContain(defaultAgeLabel);
 		expect(document.body.textContent).not.toContain("30 - 40");
 	});
 });

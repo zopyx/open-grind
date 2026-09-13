@@ -5,7 +5,7 @@
 	import { Button, buttonVariants } from "$lib/components/ui/button";
 	import * as ToggleGroup from "$lib/components/ui/toggle-group";
 	import { gridState } from "$lib/grid/grid-state.svelte";
-	import { defaultFilters } from "$lib/model/browse/grid/filters";
+	import { defaultFilterPreset } from "$lib/model/browse/grid/presets";
 	import AgeQuickFilter from "./AgeQuickFilter.svelte";
 	import PositionQuickFilter from "./PositionQuickFilter.svelte";
 
@@ -16,7 +16,9 @@
 
 	const TOGGLE_FILTER_KEYS = ["isOnline", "isRightNow", "isFresh"] as const;
 
-	const filters = $derived(gridState.filters.value ?? defaultFilters);
+	const filters = $derived(
+		gridState.filters.value ?? defaultFilterPreset.filters,
+	);
 	const { ageEnabled, positionEnabled } = $derived(filters);
 </script>
 

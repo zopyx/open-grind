@@ -4,10 +4,8 @@
 	import AgeFilterSlider from "$lib/components/filters/age/AgeFilterSlider.svelte";
 	import FilterDrawer from "$lib/components/filters/FilterDrawer.svelte";
 	import { gridState } from "$lib/grid/grid-state.svelte";
-	import {
-		ageRangeLabel,
-		defaultFilters,
-	} from "$lib/model/browse/grid/filters";
+	import { ageRangeLabel } from "$lib/model/browse/grid/filters";
+	import { defaultFilterPreset } from "$lib/model/browse/grid/presets";
 
 	let { open = $bindable() }: { open: boolean } = $props();
 
@@ -29,7 +27,7 @@
 	title="Age"
 	switchLabel="Filter by age"
 	onreset={() => {
-		value = defaultFilters.age;
+		value = defaultFilterPreset.filters.age;
 	}}
 	onapply={() => gridState.filters.set({ ageEnabled: enabled, age: value })}
 >

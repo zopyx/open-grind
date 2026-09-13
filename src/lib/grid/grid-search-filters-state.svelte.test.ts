@@ -12,6 +12,7 @@ vi.mock("$lib/app-data/preferences.svelte", () => ({
 
 import { GridSearchFiltersState } from "$lib/grid/grid-search-filters-state.svelte";
 import { defaultFilters } from "$lib/model/browse/grid/filters";
+import { defaultFilterPreset } from "$lib/model/browse/grid/presets";
 
 async function loadedState(onQueryChange = vi.fn()) {
 	const state = new GridSearchFiltersState({ onQueryChange });
@@ -28,10 +29,10 @@ beforeEach(() => {
 });
 
 describe("snapshot", () => {
-	it("falls back to the defaults before the stored filters load", () => {
+	it("falls back to the default preset before the stored filters load", () => {
 		const state = new GridSearchFiltersState({ onQueryChange: vi.fn() });
 
-		expect(state.snapshot()).toEqual(defaultFilters);
+		expect(state.snapshot()).toEqual(defaultFilterPreset.filters);
 	});
 
 	it("detaches the copy from the stored filters", async () => {
@@ -41,6 +42,28 @@ describe("snapshot", () => {
 		state.set({ genders: [3] });
 
 		expect(snapshot.genders).toEqual([1, 2]);
+	});
+});
+
+describe("load and reset", () => {
+	it("starts from the default preset when nothing is stored", async () => {
+		getPreferencesMock.mockResolvedValue({});
+
+		const { state } = await loadedState();
+
+		expect(state.value).toEqual(defaultFilterPreset.filters);
+	});
+
+	it("resets to the default preset, not to an empty filter set", async () => {
+		const { state } = await loadedState();
+		state.set({ isOnline: true, tagsEnabled: true, tags: ["Coffee"] });
+
+		state.resetFilters();
+
+		expect(state.value).toEqual(defaultFilterPreset.filters);
+		expect(state.value?.isOnline).toBe(false);
+		expect(state.value?.tags).toEqual(["Bondage"]);
+		expect(setPreferencesMock).toHaveBeenCalled();
 	});
 });
 

@@ -3,6 +3,7 @@
 
 	import AgeFilter from "$lib/components/filters/age/AgeFilterField.svelte";
 	import FilterBoolean from "$lib/components/filters/FilterBoolean.svelte";
+	import FilterPresetPicker from "$lib/components/filters/FilterPresetPicker.svelte";
 	import GendersFilter from "$lib/components/filters/GendersFilter.svelte";
 	import HeightFilter from "$lib/components/filters/HeightFilter.svelte";
 	import { optionFilters } from "$lib/components/filters/option-filters";
@@ -127,6 +128,9 @@
 		>
 			<Sheet.Title>Filters</Sheet.Title>
 		</Sheet.Header>
+		<div class="px-4 pb-3">
+			<FilterPresetPicker bind:filters />
+		</div>
 		<div
 			class="flex max-h-full min-h-0 w-full flex-1 shrink gap-4 overflow-auto px-4 py-1 pb-4 *:flex-1 *:flex-col *:gap-4 **:break-inside-avoid max-lg:flex-col lg:gap-12"
 			onscroll={(event) => {
