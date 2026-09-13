@@ -40,3 +40,9 @@ Settings → App → About Open Grind.
   built-in preset. Installations that already stored filters keep them.
 - The age and position quick filters reset to the default preset's values
   (18-30, bottom) instead of clearing the field.
+
+### Fixed
+
+- The built-in presets filter for the lowercase `bondage` tag the API actually
+  returns, instead of `Bondage`, which matched no tag and left the tag filter
+  showing as unselected.

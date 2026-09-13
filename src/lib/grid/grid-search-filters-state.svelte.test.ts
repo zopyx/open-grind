@@ -62,7 +62,7 @@ describe("load and reset", () => {
 
 		expect(state.value).toEqual(defaultFilterPreset.filters);
 		expect(state.value?.isOnline).toBe(false);
-		expect(state.value?.tags).toEqual(["Bondage"]);
+		expect(state.value?.tags).toEqual(["bondage"]);
 		expect(setPreferencesMock).toHaveBeenCalled();
 	});
 });

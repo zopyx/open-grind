@@ -7,6 +7,7 @@ import {
 	gridSearchFiltersSchema,
 } from "$lib/model/browse/grid/filters";
 import {
+	BONDAGE_TAG,
 	builtInFilterPresets,
 	defaultFilterPreset,
 	filterPresetSchema,
@@ -37,13 +38,24 @@ describe("filter presets", () => {
 			expect(filterPresetSchema.parse(preset)).toEqual(preset);
 	});
 
+	it("filters for the lowercase tag texts the API returns", () => {
+		for (const preset of builtInFilterPresets) {
+			for (const tag of preset.filters.tags) {
+				// The tag list holds lowercase texts; a capitalised filter value
+				// matches nothing and leaves the tag looking unselected.
+				expect(tag, preset.name).toBe(tag.toLowerCase());
+				expect(tag, preset.name).toBe(BONDAGE_TAG);
+			}
+		}
+	});
+
 	it("describes Online Master as online, Bondage, vers top or top", () => {
 		const { filters } = onlineMasterFilterPreset;
 
 		expect(onlineMasterFilterPreset.name).toBe("Online Master");
 		expect(filters.isOnline).toBe(true);
 		expect(filters.tagsEnabled).toBe(true);
-		expect(filters.tags).toEqual(["Bondage"]);
+		expect(filters.tags).toEqual([BONDAGE_TAG]);
 		expect(filters.positionEnabled).toBe(true);
 		expect(filters.positions).toEqual([
 			FilterPosition.VersTop,
@@ -58,7 +70,7 @@ describe("filter presets", () => {
 		const { filters } = defaultFilterPreset;
 
 		expect(filters.tagsEnabled).toBe(true);
-		expect(filters.tags).toEqual(["Bondage"]);
+		expect(filters.tags).toEqual([BONDAGE_TAG]);
 		expect(filters.ageEnabled).toBe(true);
 		expect(filters.age).toEqual([AGE_MIN, 30]);
 		expect(filters.positionEnabled).toBe(true);

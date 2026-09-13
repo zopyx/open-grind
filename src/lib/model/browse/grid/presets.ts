@@ -17,6 +17,10 @@ export const filterPresetSchema = z.object({
 
 export type FilterPreset = z.infer<typeof filterPresetSchema>;
 
+// Tag filters hold the tag texts the API returns, which are lowercase
+// (`bondage`, not `Bondage`); anything else never matches a tag in the list.
+export const BONDAGE_TAG = "bondage";
+
 // What a fresh install starts from and what `Reset filters` goes back to.
 export const defaultFilterPreset: FilterPreset = filterPresetSchema.parse({
 	id: "bondage-18-30-bottom-side-vers-bottom",
@@ -26,7 +30,7 @@ export const defaultFilterPreset: FilterPreset = filterPresetSchema.parse({
 		ageEnabled: true,
 		age: [AGE_MIN, 30],
 		tagsEnabled: true,
-		tags: ["Bondage"],
+		tags: [BONDAGE_TAG],
 		positionEnabled: true,
 		positions: [
 			FilterPosition.Bottom,
@@ -45,7 +49,7 @@ export const onlineMasterFilterPreset: FilterPreset = filterPresetSchema.parse({
 		...defaultFilters,
 		isOnline: true,
 		tagsEnabled: true,
-		tags: ["Bondage"],
+		tags: [BONDAGE_TAG],
 		positionEnabled: true,
 		positions: [FilterPosition.VersTop, FilterPosition.Top],
 	},

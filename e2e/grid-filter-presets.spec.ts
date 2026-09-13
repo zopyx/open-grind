@@ -5,6 +5,8 @@ import { ensureGridLocation, installTauriShim } from "./support/app";
 const DEFAULT_PRESET = "Bondage 18-30 Bottom/Side/Vers Bottom";
 const ONLINE_PRESET = "Online Master";
 const SAVED_PRESET = "Late night";
+// Tag filters hold the tag texts the API returns, and those are lowercase.
+const BONDAGE_TAG = "bondage";
 const PRESET_TRIGGER = '[aria-label="Filter presets"]';
 const ACTIVE_PILL_BACKGROUND = "rgb(255, 255, 255)";
 
@@ -41,7 +43,7 @@ test("runs the default preset and switches between presets and custom filters", 
 	// three bottom-leaning positions.
 	await expect(trigger(page)).toHaveText(DEFAULT_PRESET);
 	await expect(
-		sheet(page).getByText("Bondage", { exact: true }),
+		sheet(page).getByText(BONDAGE_TAG, { exact: true }),
 	).toBeVisible();
 	await expect(
 		sheet(page).getByRole("slider", { name: "Minimum age" }),
@@ -122,7 +124,7 @@ test("the Online Master preset asks for online top or vers top", async ({
 	const online = sheet(page).getByLabel("Online");
 	await expect(online).toBeChecked();
 	await expect(
-		sheet(page).getByText("Bondage", { exact: true }),
+		sheet(page).getByText(BONDAGE_TAG, { exact: true }),
 	).toBeVisible();
 	for (const position of ["Top", "Vers Top"])
 		await expect(
