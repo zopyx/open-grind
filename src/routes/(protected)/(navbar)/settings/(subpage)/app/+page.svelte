@@ -3,6 +3,7 @@
 	import { toast } from "svelte-sonner";
 
 	import ToastUnimplemented from "$lib/components/feedback/ToastUnimplemented.svelte";
+	import { Button } from "$lib/components/ui/button";
 	import * as Item from "$lib/components/ui/item";
 	import { hapticsAvailable } from "$lib/haptics";
 	import { desktopEntryAvailable } from "$lib/platform/desktop-entry.svelte";
@@ -10,11 +11,14 @@
 		updatesSelfManaged,
 		updatesUnsupportedReason,
 	} from "$lib/updates/capability.svelte";
+	import AboutDialog from "./AboutDialog.svelte";
 	import AppsMenuEntrySetting from "./AppsMenuEntrySetting.svelte";
 	import AutomaticUpdatesSetting from "./AutomaticUpdatesSetting.svelte";
 	import BackdropBlurSetting from "./BackdropBlurSetting.svelte";
 	import PreferenceSwitchSetting from "./PreferenceSwitchSetting.svelte";
 	import UnitsSetting from "./UnitsSetting.svelte";
+
+	let aboutOpen = $state(false);
 </script>
 
 {#snippet item({
@@ -96,6 +100,25 @@
 <h2>About</h2>
 <Item.Root variant="outline">
 	{#snippet child({ props })}
+		<Button
+			{...props}
+			variant="ghost"
+			class="h-auto w-full justify-start truncate dark:hover:bg-muted"
+			onclick={() => (aboutOpen = true)}
+		>
+			<Item.Content class="max-cramped:min-w-0">
+				<Item.Title class="inline-block max-w-full min-w-0 truncate">
+					About Open Grind
+				</Item.Title>
+			</Item.Content>
+			<Item.Actions class="min-w-0">
+				<CaretRightIcon class="size-4 shrink-0" />
+			</Item.Actions>
+		</Button>
+	{/snippet}
+</Item.Root>
+<Item.Root variant="outline">
+	{#snippet child({ props })}
 		<a href="/settings/app/credits" {...props}>
 			<Item.Content class="max-cramped:min-w-0">
 				<Item.Title class="inline-block max-w-full min-w-0 truncate">
@@ -108,6 +131,7 @@
 		</a>
 	{/snippet}
 </Item.Root>
+<AboutDialog bind:open={aboutOpen} />
 
 <style lang="postcss">
 	@reference "$layout";
