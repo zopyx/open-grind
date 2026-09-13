@@ -29,6 +29,10 @@ Settings → App → About Open Grind.
 - About dialog under Settings → App, showing the app version, the date the build
   was produced, the Grindr API version it talks to, and links to the website,
   the source and this changelog.
+- Saved phrases: the composer's bookmark button (next to the attachment button)
+  opens your own phrases; tapping one puts it in the draft. They are stored in a
+  local SQLite database on the device, and Settings → App → Saved phrases lets
+  you add, edit and delete them.
 
 ### Changed
 

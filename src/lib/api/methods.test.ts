@@ -323,12 +323,25 @@ describe("callMethod", () => {
 });
 
 describe("demo command responses", () => {
+	// Commands that take a request need one; the ids are in the demo's seeded
+	// list, so update and delete have something to hit whatever the order.
+	const sampleRequests: Partial<Record<keyof typeof methods, unknown>> = {
+		saved_phrases_add: { text: "Hey" },
+		saved_phrases_update: { id: 2, text: "Hey" },
+		saved_phrases_delete: { id: 3 },
+	};
+
 	it.each(Object.keys(methods))(
 		"%s matches its declared schema",
 		(method) => {
 			const { response } = methods[method as keyof typeof methods];
 			expect(
-				response.safeParse(demoCallMethod(method)).error,
+				response.safeParse(
+					demoCallMethod(
+						method,
+						sampleRequests[method as keyof typeof methods],
+					),
+				).error,
 			).toBeUndefined();
 		},
 	);

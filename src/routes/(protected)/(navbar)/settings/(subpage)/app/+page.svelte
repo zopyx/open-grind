@@ -71,6 +71,21 @@
 	title: "Notifications",
 	unimplemented: { feature: "Notifications", issue: 45 },
 })}
+<h2>Chat</h2>
+<Item.Root variant="outline">
+	{#snippet child({ props })}
+		<a href="/settings/app/phrases" {...props}>
+			<Item.Content class="max-cramped:min-w-0">
+				<Item.Title class="inline-block max-w-full min-w-0 truncate">
+					Saved phrases
+				</Item.Title>
+			</Item.Content>
+			<Item.Actions class="min-w-0">
+				<CaretRightIcon class="size-4 shrink-0" />
+			</Item.Actions>
+		</a>
+	{/snippet}
+</Item.Root>
 <h2>Privacy</h2>
 <PreferenceSwitchSetting
 	preference="stayOnline"

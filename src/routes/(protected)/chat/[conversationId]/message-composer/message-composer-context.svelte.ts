@@ -6,6 +6,7 @@ export const [getMessageComposerContext, setMessageComposerContext] =
 	createContext<
 		() => {
 			disabled: boolean;
+			insertText: (text: string) => void;
 			sendMessages: (drafts: MessageDraft[]) => void | Promise<void>;
 		}
 	>();

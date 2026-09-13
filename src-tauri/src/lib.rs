@@ -8,6 +8,7 @@ mod error;
 mod haptics;
 pub mod media;
 mod photo;
+mod saved_phrases;
 mod scroll_phase;
 mod state;
 mod storage;
@@ -205,6 +206,10 @@ pub fn run() {
             api::update::commands::update_discard,
             app_settings::open_app_settings,
             appearance::backdrop_filter_renders,
+            saved_phrases::saved_phrases_list,
+            saved_phrases::saved_phrases_add,
+            saved_phrases::saved_phrases_update,
+            saved_phrases::saved_phrases_delete,
         ])
         .setup(|app| {
             scroll_phase::install_scroll_gesture_bridge(app.handle());
@@ -249,6 +254,10 @@ pub fn run() {
             storage::init_file_store(app.path().app_local_data_dir()?);
 
             app.manage(storage::init_keyring());
+
+            if let Err(e) = saved_phrases::initialize(app.handle()) {
+                tracing::error!("[setup] saved phrases database: {e}");
+            }
 
             let device = DeviceStorage::load_or_create();
 

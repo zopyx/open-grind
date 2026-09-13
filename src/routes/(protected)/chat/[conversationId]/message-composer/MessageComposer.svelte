@@ -14,6 +14,7 @@
 	import ComposerSubmitButton from "./ComposerSubmitButton.svelte";
 	import { setMessageComposerContext } from "./message-composer-context.svelte";
 	import MessageTextInput from "./MessageTextInput.svelte";
+	import ComposerSavedPhrases from "./saved-phrases/ComposerSavedPhrases.svelte";
 	import ComposerVoiceMessage from "./voice-message/ComposerVoiceMessage.svelte";
 
 	let {
@@ -55,6 +56,17 @@
 		if (form) height = form.clientHeight;
 	}
 
+	/** Saved phrases land in the draft without stealing what is already there. */
+	function insertText(text: string) {
+		const phrase = text.trim();
+		if (phrase === "") return;
+		textContent =
+			textContent.trim() === ""
+				? phrase
+				: `${textContent.trimEnd()} ${phrase}`;
+		textInput?.focus();
+	}
+
 	$effect(() => {
 		const openedConversationId = conversationId;
 		untrack(() => {
@@ -85,7 +97,11 @@
 		dismiss: () => onCancelReply?.(),
 	});
 
-	setMessageComposerContext(() => ({ disabled, sendMessages: onSend }));
+	setMessageComposerContext(() => ({
+		disabled,
+		insertText,
+		sendMessages: onSend,
+	}));
 </script>
 
 <form
@@ -110,6 +126,7 @@
 		{#if textContent === ""}
 			{#key conversationId}
 				<ComposerAttachments />
+				<ComposerSavedPhrases />
 			{/key}
 			<ComposerVoiceMessage />
 		{:else}

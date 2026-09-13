@@ -49,6 +49,12 @@ import { demoReceivedTaps, demoViews } from "./mock/interest";
 import { profileSeed } from "./mock/profiles";
 import { demoGenders, demoPronouns, demoTags } from "./mock/reference";
 import {
+	demoAddSavedPhrase,
+	demoDeleteSavedPhrase,
+	demoSavedPhrases,
+	demoUpdateSavedPhrase,
+} from "./mock/saved-phrases";
+import {
 	demoAccountPreferences,
 	demoSetAccountPreferences,
 } from "./mock/settings";
@@ -59,7 +65,7 @@ function ok(body: unknown): DemoResponse {
 	return { status: 200, body };
 }
 
-export function demoCallMethod(method: string): unknown {
+export function demoCallMethod(method: string, args?: unknown): unknown {
 	switch (method) {
 		case "auth_state":
 			return demoMeProfileId;
@@ -77,6 +83,15 @@ export function demoCallMethod(method: string): unknown {
 			return { signedIn: true, expiresAt: null, stale: false };
 		case "storage_backend":
 			return "keyring";
+		case "saved_phrases_list":
+			return demoSavedPhrases();
+		case "saved_phrases_add":
+			return demoAddSavedPhrase((args as { text: string }).text);
+		case "saved_phrases_update":
+			return demoUpdateSavedPhrase(args as { id: number; text: string });
+		case "saved_phrases_delete":
+			demoDeleteSavedPhrase((args as { id: number }).id);
+			return null;
 		default:
 			return null;
 	}

@@ -14,6 +14,10 @@ import {
 } from "$lib/api/request-blocked-state.svelte";
 import { demoCallMethod, demoEnabled } from "$lib/demo";
 import { geohashSchema } from "$lib/model/geohash";
+import {
+	savedPhraseSchema,
+	savedPhrasesResponseSchema,
+} from "$lib/model/messaging/saved-phrases";
 
 const maxPrettyMessageChars = 200;
 
@@ -109,6 +113,25 @@ export const methods = {
 		request: z.object({ active: z.boolean() }),
 		response: z.null(),
 	},
+	saved_phrases_list: {
+		request: z.undefined(),
+		response: savedPhrasesResponseSchema,
+	},
+	saved_phrases_add: {
+		request: z.object({ text: z.string().min(1) }),
+		response: savedPhraseSchema,
+	},
+	saved_phrases_update: {
+		request: z.object({
+			id: z.int().nonnegative(),
+			text: z.string().min(1),
+		}),
+		response: savedPhraseSchema,
+	},
+	saved_phrases_delete: {
+		request: z.object({ id: z.int().nonnegative() }),
+		response: z.null(),
+	},
 } satisfies Record<string, { request: z.ZodType; response: z.ZodType }>;
 
 export async function callMethod<T extends keyof typeof methods>(
@@ -119,7 +142,9 @@ export async function callMethod<T extends keyof typeof methods>(
 ): Promise<z.infer<(typeof methods)[T]["response"]>> {
 	type Result = z.infer<(typeof methods)[T]["response"]>;
 	if (demoEnabled) {
-		return methods[method].response.parse(demoCallMethod(method)) as Result;
+		return methods[method].response.parse(
+			demoCallMethod(method, args[0]),
+		) as Result;
 	}
 	try {
 		return methods[method].response.parse(

@@ -50,6 +50,7 @@ pub enum AppError {
 	NetworkBlocked,
 	NotInitialized,
 	SessionCleared,
+	Storage(String),
 }
 
 impl AppError {
@@ -69,6 +70,7 @@ impl AppError {
 			AppError::NetworkBlocked => "NetworkBlocked",
 			AppError::NotInitialized => "NotInitialized",
 			AppError::SessionCleared => "SessionCleared",
+			AppError::Storage(_) => "Storage",
 		}
 	}
 }
@@ -106,6 +108,7 @@ impl fmt::Display for AppError {
 			AppError::NotInitialized => {
 				write!(f, "GrindrClient not initialized")
 			}
+			AppError::Storage(msg) => write!(f, "Storage error: {msg}"),
 		}
 	}
 }
@@ -204,6 +207,7 @@ mod tests {
 			AppError::NetworkBlocked,
 			AppError::NotInitialized,
 			AppError::SessionCleared,
+			AppError::Storage(String::new()),
 		];
 		for error in errors {
 			assert_eq!(
