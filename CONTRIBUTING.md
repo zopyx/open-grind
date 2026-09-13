@@ -194,6 +194,10 @@ v1.123.0    = 1123000
 
 ## Submitting your changes
 
+### Changelog
+
+Every change a user can notice gets an entry in [CHANGELOG.md](./CHANGELOG.md), under `Unreleased` and in the section it belongs to (`Added`, `Changed`, `Fixed`, `Removed`). Write it in the same commit as the change. Cutting a release moves those entries under the version being released.
+
 ### Checks and tests
 
 Before opening a pull request, run the same checks CI runs:
