@@ -6,6 +6,7 @@
 	import DistanceFormatted from "$lib/components/profile/DistanceFormatted.svelte";
 	import ProfileStatusIndicator from "$lib/components/profile/ProfileStatusIndicator.svelte";
 	import UserAvatar from "$lib/components/profile/UserAvatar.svelte";
+	import SelectionOverlay from "$lib/components/shared/SelectionOverlay.svelte";
 	import { Badge } from "$lib/components/ui/badge";
 
 	let {
@@ -20,6 +21,8 @@
 		hadRecentChat = false,
 		anonymous = false,
 		href = null,
+		selected = false,
+		onToggleSelected,
 		class: className,
 		overlay,
 	}: {
@@ -34,9 +37,16 @@
 		hadRecentChat?: boolean;
 		anonymous?: boolean;
 		href?: string | null;
+		/** Renders the card as a selection toggle instead of a link. */
+		selected?: boolean;
+		onToggleSelected?: () => void;
 		class?: import("svelte/elements").ClassValue;
 		overlay?: Snippet;
 	} = $props();
+
+	const selectionLabel = $derived(
+		`Select ${anonymous ? "profile" : (displayName ?? "someone")}`,
+	);
 </script>
 
 {#snippet content()}
@@ -117,7 +127,23 @@
 	{@render overlay?.()}
 {/snippet}
 
-{#if href !== null}
+{#if onToggleSelected}
+	<button
+		type="button"
+		class={[
+			"relative flex aspect-square items-end overflow-hidden",
+			className,
+		]}
+		aria-pressed={selected}
+		aria-label={selectionLabel}
+		onclick={onToggleSelected}
+	>
+		{@render content()}
+		{#if selected}
+			<SelectionOverlay class="z-1" />
+		{/if}
+	</button>
+{:else if href !== null}
 	<a
 		{href}
 		aria-label={anonymous ? "Profile" : undefined}

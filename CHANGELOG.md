@@ -33,6 +33,12 @@ Settings → App → About Open Grind.
   opens your own phrases; tapping one puts it in the draft. They are stored in a
   local SQLite database on the device, and Settings → App → Saved phrases lets
   you add, edit and delete them.
+- Messaging several profiles at once: the button at the right end of the grid's
+  top bar turns the photo grid into a selection grid. Pick any number of
+  profiles, tap "Message", type one text and send it: every selected profile
+  gets the same message as its own message, a second apart, with a progress bar
+  during the run and a list of the profiles that could not be reached. The run
+  can be stopped between two messages.
 
 ### Changed
 

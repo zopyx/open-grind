@@ -4,13 +4,23 @@
 	import { observeIntersection } from "$lib/util/observe-intersection";
 	import { virtualGrid } from "$lib/util/virtual-grid.svelte";
 	import type { GridProfile } from "$lib/grid/grid";
+	import type { SelectionSet } from "$lib/util/selection.svelte";
 	import EmptyGrid from "./EmptyGrid.svelte";
 	import GridCellSkeleton from "./GridCellSkeleton.svelte";
 	import GridProfileMiniCard from "./GridProfileMiniCard.svelte";
 
 	const PAGE_SKELETONS = 20;
 
-	let { geohash }: { geohash: string } = $props();
+	let {
+		geohash,
+		selection = null,
+		onToggleSelected,
+	}: {
+		geohash: string;
+		/** Set while the grid is picking profiles for a message. */
+		selection?: SelectionSet<number> | null;
+		onToggleSelected?: (profileId: number) => void;
+	} = $props();
 
 	let gridElement: HTMLElement | null = $state(null);
 
@@ -94,6 +104,10 @@
 						isFavorite={item.isFavorite}
 						isVisiting={item.isVisiting}
 						hadRecentChat={item.hasChattedInLast24Hrs}
+						selected={selection?.has(item.id) ?? false}
+						onToggleSelected={selection
+							? () => onToggleSelected?.(item.id)
+							: undefined}
 						medias={item.profilePhotosHashes?.map((mediaHash) => ({
 							mediaHash,
 						})) ?? []}

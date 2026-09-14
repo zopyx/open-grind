@@ -31,6 +31,17 @@ if (!Number.isInteger(versionCode)) {
 	throw new Error("bundle.android.versionCode must be an integer");
 }
 
+// iOS cannot express a prerelease version as CFBundleVersion, so it is pinned
+// to the same number as the Android version code; `tauri ios build` fails
+// without it while main carries a -dev version.
+const iosBundleVersion = tauriConfJson.bundle.iOS?.bundleVersion;
+if (iosBundleVersion !== String(versionCode)) {
+	throw new Error(
+		`bundle.iOS.bundleVersion must be "${versionCode}", the same number as ` +
+			`bundle.android.versionCode, but it is ${JSON.stringify(iosBundleVersion)}`,
+	);
+}
+
 const isDev =
 	prerelease.split(".").includes("dev") || prerelease.endsWith("-dev");
 

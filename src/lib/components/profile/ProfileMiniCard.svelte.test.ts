@@ -51,4 +51,34 @@ describe("ProfileMiniCard", () => {
 		expect(screen.queryByText("Someone")).toBeNull();
 		expect(screen.getByRole("link", { name: "Profile" })).toBeTruthy();
 	});
+
+	it("toggles selection instead of navigating while picking profiles", () => {
+		const onToggleSelected = vi.fn();
+		render(ProfileMiniCard, {
+			displayName: "Simon",
+			href: "/profile/1",
+			selected: true,
+			onToggleSelected,
+		});
+
+		expect(screen.queryByRole("link")).toBeNull();
+		const card = screen.getByRole("button", { name: "Select Simon" });
+		expect(card.getAttribute("aria-pressed")).toBe("true");
+
+		card.click();
+
+		expect(onToggleSelected).toHaveBeenCalledOnce();
+	});
+
+	it("names an unnamed card in the selection toggle", () => {
+		render(ProfileMiniCard, {
+			href: "/profile/1",
+			selected: false,
+			onToggleSelected: () => {},
+		});
+
+		expect(
+			screen.getByRole("button", { name: "Select someone" }),
+		).toBeTruthy();
+	});
 });

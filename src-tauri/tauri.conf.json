@@ -75,6 +75,10 @@
 			"autoIncrementVersionCode": false,
 			"minSdkVersion": 28,
 			"versionCode": 1050
+		},
+		"iOS": {
+			"bundleVersion": "1050",
+			"minimumSystemVersion": "15.0"
 		}
 	}
 }

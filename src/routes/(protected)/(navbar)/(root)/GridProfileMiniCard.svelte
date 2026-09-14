@@ -12,6 +12,8 @@
 		isFavorite = false,
 		isVisiting = false,
 		hadRecentChat = false,
+		selected = false,
+		onToggleSelected,
 	}: {
 		id: number;
 		displayName?: string | null;
@@ -23,6 +25,8 @@
 		isFavorite?: boolean;
 		isVisiting?: boolean;
 		hadRecentChat?: boolean;
+		selected?: boolean;
+		onToggleSelected?: () => void;
 	} = $props();
 </script>
 
@@ -36,5 +40,7 @@
 	{isFavorite}
 	{isVisiting}
 	{hadRecentChat}
+	{selected}
+	{onToggleSelected}
 	href="/profile/{id}"
 />
